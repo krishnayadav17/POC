@@ -17,7 +17,7 @@ class Carousel extends React.Component<
           ? props.itemsPerScrollInPortrait * 1
           : props.itemsPerScrollInPortrait * 2,
       bulletss: [],
-      noOfItems: React.Children.count(this.props.children),
+      noOfItems: React.Children.count(this.props.children)
     };
   }
 
@@ -28,7 +28,9 @@ class Carousel extends React.Component<
         ? this.props.itemsPerScrollInPortrait * 1
         : this.props.itemsPerScrollInPortrait * 2;
     state.intervals = Math.ceil(state.noOfItems / state.itemsPerInterval);
+    state.position = 1;
     this.setState(state);
+    this.refs.scrollview.scrollTo({x:0,y:0,animated:true});
     this.bulletGenerator();
   };
 
@@ -65,7 +67,7 @@ class Carousel extends React.Component<
         maxWidth = '50%';
         break;
       case 3:
-        maxWidth = '33.33%';
+        maxWidth = '33.3333%';
         break;
       case 4:
         maxWidth = '25%';
@@ -80,34 +82,20 @@ class Carousel extends React.Component<
         maxWidth = '100%';
         break;
     }
-    const data = React.Children.map(this.props.children, (child: any) => {
-      return React.cloneElement(child, {
-        style: {
-          flexBasis: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          alignContent: 'center',
-          justifyContent: 'center',
-          height: 200,
-          maxWidth: maxWidth,
-        },
-      });
-    });
     const children = React.Children.map(this.props.children, (child: any) => {
       return <View style={{...styles.slide, maxWidth: maxWidth}}>{child}</View>;
     });
+
     return (
       <View style={{flex: 1}}>
         <ScrollView
           horizontal={true}
+          ref = 'scrollview'
           pagingEnabled
           contentContainerStyle={{width: `${100 * this.state.intervals}%`,alignItems:'center'}}
           showsHorizontalScrollIndicator={false}
           scrollEventThrottle={200}
           decelerationRate="fast"
-          centerContent={true}
           onContentSizeChange={() => this.init()}
           onScroll={(data) => {
             this.getPosition(
