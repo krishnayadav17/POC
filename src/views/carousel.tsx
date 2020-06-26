@@ -85,11 +85,7 @@ class Carousel extends React.Component<carouselComponetProps,carouselComponetSta
           horizontal={true}
           ref="scrollview"
           pagingEnabled
-          contentContainerStyle={{
-            width: `${100 * this.state.intervals}%`,
-            alignItems: 'center',
-            flexGrow: 1,
-          }}
+          contentContainerStyle={{width: `${100 * this.state.intervals}%`,alignItems: 'center'}}
           showsHorizontalScrollIndicator={false}
           scrollEventThrottle={200}
           decelerationRate="fast"
