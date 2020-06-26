@@ -8,5 +8,6 @@ export  interface carouselComponetState {
     itemsPerInterval : number
     bulletss : []
     noOfItems : number
+    slides : any
   }
 
