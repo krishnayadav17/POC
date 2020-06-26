@@ -9,7 +9,7 @@ const App = () => {
   return (
       <View style={{flex: 1}}>
 
-        <Carousel itemsPerScrollInPortrait={2}>
+        <Carousel itemsPerScrollInPortrait={1}>
           
             <View style={{...styles.colorBox, backgroundColor: 'red'}}>
               <Text style={styles.num}>1</Text>

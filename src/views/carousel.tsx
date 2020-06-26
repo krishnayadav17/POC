@@ -32,6 +32,7 @@ class Carousel extends React.Component<carouselComponetProps,carouselComponetSta
     this.refs.scrollview.scrollTo({x: 0, y: 0, animated: true});
     this.bulletGenerator();
     this.slidesGenerator();
+    console.log(11%4);
   };
 
   getPosition = (layoutMeasurement: number, x_position: number) => {
@@ -58,21 +59,16 @@ class Carousel extends React.Component<carouselComponetProps,carouselComponetSta
   };
 
   slidesGenerator = () => {
+    var itemsInLastInterval:number = this.state.noOfItems % this.state.itemsPerInterval;
     var count = 0;
-    for (let i = 1; i <= this.state.noOfItems ; i++){
-      if( i > Math.floor(this.state.noOfItems / this.state.itemsPerInterval) * this.state.itemsPerInterval)
-      count++;
-    }
-
-    var count1 = 0;
     const children = React.Children.map(this.props.children, (child: any) => {
-      count1++;
+      count++;
         return (
-        <View style={{...styles.slide,maxWidth : 
-                                      count1 > Math.floor(this.state.noOfItems / this.state.itemsPerInterval) * this.state.itemsPerInterval 
-                                      ? maxWidth[count] : maxWidth[this.state.itemsPerInterval] }}>
-          {child}
-        </View>
+          <View style={{...styles.slide,maxWidth : 
+                                      count > Math.floor(this.state.noOfItems / this.state.itemsPerInterval) * this.state.itemsPerInterval 
+                                      ? maxWidth[itemsInLastInterval] : maxWidth[this.state.itemsPerInterval] }}>
+            {child}
+          </View>
         )
       })
     this.setState({slides : children})    
