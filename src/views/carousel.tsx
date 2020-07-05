@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import {View, ScrollView, Text, Dimensions} from 'react-native';
-import {carouselComponetProps, carouselComponetState} from '../interface';
-import {maxWidth} from '../constants';
+import {CarouselComponetProps, CarouselComponetState} from '../interface';
 import styles from '../stylesheet';
 
-class Carousel extends React.Component<carouselComponetProps,carouselComponetState> {
-  constructor(props: any) {
+class Carousel extends React.Component<CarouselComponetProps,CarouselComponetState> {
+  constructor(props: CarouselComponetProps) {
     super(props);
     this.state = {
       position: 1,
       intervals: 1,
       itemsPerInterval: this.calculateItemsPerInterval(),
-      bulletss: [],
+      bullets: [],
       noOfItems: React.Children.count(this.props.children),
       slides : undefined
     };
@@ -24,7 +23,7 @@ class Carousel extends React.Component<carouselComponetProps,carouselComponetSta
   }
 
   init = () => {
-    var state: carouselComponetState = this.state;
+    var state: CarouselComponetState = this.state;
     state.itemsPerInterval = this.calculateItemsPerInterval();
     state.intervals = Math.ceil(state.noOfItems / state.itemsPerInterval);
     state.position = 1;
@@ -32,7 +31,6 @@ class Carousel extends React.Component<carouselComponetProps,carouselComponetSta
     this.refs.scrollview.scrollTo({x: 0, y: 0, animated: true});
     this.bulletGenerator();
     this.slidesGenerator();
-    console.log(11%4);
   };
 
   getPosition = (layoutMeasurement: number, x_position: number) => {
@@ -55,7 +53,7 @@ class Carousel extends React.Component<carouselComponetProps,carouselComponetSta
         </Text>,
       );
     }
-    this.setState({bulletss: bullets});
+    this.setState({bullets: bullets});
   };
 
   slidesGenerator = () => {
@@ -66,7 +64,7 @@ class Carousel extends React.Component<carouselComponetProps,carouselComponetSta
         return (
           <View style={{...styles.slide,maxWidth : 
                                       count > Math.floor(this.state.noOfItems / this.state.itemsPerInterval) * this.state.itemsPerInterval 
-                                      ? maxWidth[itemsInLastInterval] : maxWidth[this.state.itemsPerInterval] }}>
+                                      ? `${100 / itemsInLastInterval}%` : `${100 / this.state.itemsPerInterval}%` }}>
             {child}
           </View>
         )
@@ -94,7 +92,7 @@ class Carousel extends React.Component<carouselComponetProps,carouselComponetSta
           }}>
           {this.state.slides}
         </ScrollView>
-        <View style={styles.bullets}>{this.state.bulletss}</View>
+        <View style={styles.bullets}>{this.state.bullets}</View>
       </View>
     );
   }

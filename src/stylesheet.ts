@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   bullet: {
-    padding: 10,
+    padding: 5,
     fontSize: 50,
   },
 });

@@ -1,13 +1,22 @@
-export interface carouselComponetProps {
+export interface CarouselComponetProps {
     itemsPerScrollInPortrait : number
   }
   
-export  interface carouselComponetState {
+export  interface CarouselComponetState {
     position : number
     intervals : number
     itemsPerInterval : number
-    bulletss : []
+    bullets : []
     noOfItems : number
     slides : any
   }
+
+export interface AppComponentState {
+  isLoading : boolean
+  dataSource : any
+}
+
+export interface AppComponentProps {
+  
+}
 

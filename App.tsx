@@ -1,64 +1,69 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-import styles from './src/stylesheet'
+import {View, Text, ActivityIndicator} from 'react-native';
+import styles from './src/style'
 import Carousel from './src/views/carousel';
-
+import ScoreCard from './src/scoreCard'
+import {AppComponentProps, AppComponentState} from './src/interface'
 declare const global: {HermesInternal: null | {}};
 
-const App = () => {
-  return (
-      <View style={{flex: 1}}>
+class App extends React.Component<AppComponentProps, AppComponentState>{
 
-        <Carousel itemsPerScrollInPortrait={1}>
-          
-            <View style={{...styles.colorBox, backgroundColor: 'red'}}>
-              <Text style={styles.num}>1</Text>
-            </View>
+  constructor(props:any) {
+    super(props);
+    this.state = {
+      isLoading:true,
+      dataSource:[],
+    };
+  }
 
-            <View style={{...styles.colorBox, backgroundColor: 'blue'}}>
-              <Text style={styles.num}>2</Text>
-            </View>
+  componentDidMount(){
+    return fetch('https://private-8f89f-krishnayadav17.apiary-mock.com/questions')
+    .then((response)=> response.json())
+    .then((responseJson)=>{
+      this.setState({
+        isLoading:false,
+        dataSource:responseJson[0].singles.concat(responseJson[0].doubles),
+        })
 
-            <View style={{...styles.colorBox, backgroundColor: 'cyan'}}>
-              <Text style={styles.num}>3</Text>
-            </View>
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+    
+  }
 
-            <View style={{...styles.colorBox, backgroundColor: 'azure'}}>
-              <Text style={styles.num}>4</Text>
-            </View>
+  renderItems=():any=>{
+    var item = this.state.dataSource.sort((a:Object,b:Object)=>(Date.parse(a.date) > Date.parse(b.date)) ? 1:-1)
+    let choices:any=[];
+    item.map((val:any,key:any)=>{
+      choices.push(<ScoreCard data={val} key={key}/>)
+  })
+  return choices
+  }
 
-            <View style={{...styles.colorBox, backgroundColor: 'orange'}}>
-              <Text style={styles.num}>5</Text>
-            </View>
-               
-            <View style={{...styles.colorBox, backgroundColor: 'green'}}>
-              <Text style={styles.num}>6</Text>
-            </View>
-                
-            <View style={{...styles.colorBox, backgroundColor: 'purple'}}>
-              <Text style={styles.num}>7</Text>
-            </View>
-               
-            <View style={{...styles.colorBox, backgroundColor: 'lightblue'}}>
-              <Text style={styles.num}>8</Text>
-            </View>
-              
-            <View style={{...styles.colorBox, backgroundColor: 'brown'}}>
-              <Text style={styles.num}>9</Text>
-            </View>
+
+  render(){
+    if(this.state.isLoading){
+      return(
+        <View style={styles.container}>
+          <ActivityIndicator size='large' />
+        </View>
+      )
+    }
+    else{
+      return (
+        <View style={{flex: 1}}>
+  
+          <Carousel itemsPerScrollInPortrait={1}>
+            
+             {this.renderItems()}
          
-            <View style={{...styles.colorBox, backgroundColor: 'red'}}>
-              <Text style={styles.num}>10</Text>
-            </View>
-               
-            <View style={{...styles.colorBox, backgroundColor: 'blue'}}>
-              <Text style={styles.num}>11</Text>
-            </View>
-       
-        </Carousel>
-
-      </View>
-  );
+          </Carousel>
+  
+        </View>
+    );
+    }
+  }
 };
 
 
